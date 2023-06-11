@@ -21,7 +21,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'home' => 'home#index'
       resources :products, only: %i[index show]
-      resources :categories, only: %i[index]
+      resources :categories, only: :index
+      resources :wish_items, only: %i[index create destroy]
     end
   end
 end
