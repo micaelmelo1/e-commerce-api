@@ -6,13 +6,15 @@ class Order < ApplicationRecord
   belongs_to :coupon, optional: true
   belongs_to :user
 
+  has_many :line_items
+
   validates :installments, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :payment_type, presence: true
   validates :status, presence: true, on: :update
   validates :subtotal, presence: true, numericality: { greater_than: 0 }
   validates :total_amount, presence: true, numericality: { greater_than: 0 }
 
-  enum payment_type: { 
+  enum payment_type: {
     credit_card: 1,
     billet: 2
   }
@@ -23,7 +25,7 @@ class Order < ApplicationRecord
     waiting_payment: 3,
     payment_accepted: 4,
     payment_denied: 5,
-    finished: 6 
+    finished: 6
   }
 
   before_validation :set_default_status, on: :create
