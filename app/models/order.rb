@@ -5,7 +5,7 @@ class Order < ApplicationRecord
 
   belongs_to :coupon, optional: true
   belongs_to :user
-  
+
   validates :installments, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :payment_type, presence: true
   validates :status, presence: true, on: :update
@@ -16,7 +16,7 @@ class Order < ApplicationRecord
     credit_card: 1,
     billet: 2
   }
-  
+
   enum status: {
     processing_order: 1,
     processing_error: 2,
