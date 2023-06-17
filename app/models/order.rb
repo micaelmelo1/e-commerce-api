@@ -3,11 +3,16 @@
 class Order < ApplicationRecord
   DAYS_TO_DUE = 7
 
+  attribute :address
+  attribute :card_hash
+  attribute :document
+
   belongs_to :coupon, optional: true
   belongs_to :user
 
   has_many :line_items
 
+  validates :document, presence: true, cpf_cnpj: true, on: :create
   validates :installments, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :payment_type, presence: true
   validates :status, presence: true, on: :update
@@ -27,6 +32,12 @@ class Order < ApplicationRecord
     payment_denied: 5,
     finished: 6
   }
+
+  with_options if: -> { credit_card? }, on: :create do
+    validates :card_hash, presence: true
+    validates :address, presence: true
+    validates_associated :address
+  end
 
   before_validation :set_default_status, on: :create
 

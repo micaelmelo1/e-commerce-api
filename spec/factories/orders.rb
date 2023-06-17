@@ -2,11 +2,14 @@
 
 FactoryBot.define do
   factory :order do
+    address { build(:address) }
+    card_hash { Faker::Lorem.characters }
+    document { '03.000.050/0001-67' }
+    installments { 5 }
+    payment_type { :credit_card }
     status { :processing_order }
     subtotal { Faker::Commerce.price(range: 200.00..400.00) }
     total_amount { subtotal }
-    payment_type { :credit_card }
-    installments { 5 }
     user
 
     trait :with_items do
