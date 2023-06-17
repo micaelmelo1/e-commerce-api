@@ -20,9 +20,10 @@ Rails.application.routes.draw do
   namespace :storefront do
     namespace :v1 do
       get 'home' => 'home#index'
-      resources :products, only: %i[index show]
       resources :categories, only: :index
+      resources :checkouts, only: :create
       post '/coupons/:coupon_code/validations', to: 'coupon_validations#create'
+      resources :products, only: %i[index show]
       resources :wish_items, only: %i[index create destroy]
     end
   end
