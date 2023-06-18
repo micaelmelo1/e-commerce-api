@@ -10,6 +10,7 @@ class Order < ApplicationRecord
   belongs_to :coupon, optional: true
   belongs_to :user
 
+  has_many :juno_charges, class_name: 'Juno::Charge'
   has_many :line_items
 
   validates :document, presence: true, cpf_cnpj: true, on: :create
