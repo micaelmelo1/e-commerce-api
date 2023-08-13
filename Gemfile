@@ -29,6 +29,9 @@ gem 'jbuilder', '~> 2.10.1'
 # HTTP Request
 gem 'httparty', '~> 0.18.1'
 
+# Delayed Jobs
+gem "sidekiq", '~> 6.1.3'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
