@@ -36,3 +36,6 @@
 
 /.vscode
 *.swp
+/config/credentials/development.key
+
+/config/credentials/test.key
