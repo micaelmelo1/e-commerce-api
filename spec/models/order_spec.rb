@@ -6,9 +6,9 @@ RSpec.describe Order, type: :model do
   it { is_expected.to validate_presence_of(:status).on(:update) }
   it do
     is_expected.to define_enum_for(:status).with_values({
-                                                          processing_order: 1, processing_error: 2, waiting_payment: 3,
-                                                          payment_accepted: 4, payment_denied: 5, finished: 6
-                                                        })
+      processing_order: 1, processing_error: 2, waiting_payment: 3,
+      payment_accepted: 4, payment_denied: 5, finished: 6
+    })
   end
   it { is_expected.to validate_presence_of(:subtotal) }
   it { is_expected.to validate_numericality_of(:subtotal).is_greater_than(0) }
