@@ -5,6 +5,10 @@
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  # config.action_view.raise_on_missing_translations = true
+
+  JUNO_AUTH_URL = "https://sandbox.boletobancario.com"
+  JUNO_RESOURCE_URL = "https://sandbox.boletobancario.com/api-integration"
 
   config.cache_classes = false
   config.action_view.cache_template_loading = true
@@ -41,11 +45,14 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
-  config.action_mailer.default_url_options = { host: "http://localhost:3000" }
+  config.action_mailer.default_url_options = { host: 'http://localhost:3000' }
+  Rails.application.routes.default_url_options[:host] = 'http://localhost:3000'
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
+
+  config.active_job.queue_adapter = :test
 end
