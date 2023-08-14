@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2023_08_13_233646) do
     t.bigint "game_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "line_item_id", null: false
+    t.bigint "line_item_id"
     t.index ["game_id"], name: "index_licenses_on_game_id"
     t.index ["line_item_id"], name: "index_licenses_on_line_item_id"
   end
