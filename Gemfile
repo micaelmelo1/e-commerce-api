@@ -30,7 +30,9 @@ gem 'jbuilder', '~> 2.10.1'
 gem 'httparty', '~> 0.18.1'
 
 # Delayed Jobs
-gem "sidekiq", '~> 6.1.3'
+gem 'sidekiq', '~> 6.1.3'
+gem 'sidekiq-scheduler', '~> 3.0.1'
+
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

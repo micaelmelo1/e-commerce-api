@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require 'sidekiq/web'
+require 'sidekiq-scheduler/web'
+require_relative '../lib/middlewares/static_token_auth'
 
 Rails.application.routes.draw do
-  mount Sidekiq::Web => '/sidekiq'
+  Sidekiq::Web.use StaticTokenAuth
+  mount Sidekiq::Web => '/sidekiq/:token'
 
   mount_devise_token_auth_for 'User', at: 'auth/v1/user'
 
@@ -12,9 +15,15 @@ Rails.application.routes.draw do
       get 'home' => 'home#index'
       resources :categories
       resources :coupons
+      namespace :dashboard do
+        resources :sales_ranges, only: :index
+        resources :summaries, only: :index
+        resources :top_five_products, only: :index
+      end
       resources :games, only: [], shallow: true do
         resources :licenses
       end
+      resources :orders, only: %i[index show]
       resources :products
       resources :system_requirements
       resources :users
@@ -33,6 +42,8 @@ Rails.application.routes.draw do
       resources :categories, only: :index
       resources :checkouts, only: :create
       post '/coupons/:coupon_code/validations', to: 'coupon_validations#create'
+      resources :games, only: :index
+      resources :orders, only: %i[index show]
       resources :products, only: %i[index show]
       resources :wish_items, only: %i[index create destroy]
     end

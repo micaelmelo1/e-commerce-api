@@ -3,6 +3,7 @@
 module Juno
   module V1
     class PaymentConfirmationsController < ApplicationController
+      include StaticTokenAuthenticatable
 
       def create
         if params.has_key?(:chargeCode)

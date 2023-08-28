@@ -17,6 +17,7 @@ RSpec.describe Product, type: :model do
   it { is_expected.to have_many(:product_categories).dependent(:destroy) }
   it { is_expected.to have_many(:categories).through(:product_categories) }
   it { is_expected.to have_many(:wish_items) }
+  it { is_expected.to have_many(:line_items) }
 
   it_has_behavior_of 'like searchable concern', :product, :name
   it_behaves_like 'paginatable concern', :product
@@ -25,5 +26,13 @@ RSpec.describe Product, type: :model do
     subject.featured = nil
     subject.save(validate: false)
     expect(subject.featured).to be_falsey
+  end
+
+  it "#sells_count returns quantity product was sold" do
+    order = create(:order)
+    order.update(status: :finished)
+    product = create(:product)
+    create_list(:line_item, 2, quantity: 3, product: product, order: order)
+    expect(product.sells_count).to eq 6
   end
 end

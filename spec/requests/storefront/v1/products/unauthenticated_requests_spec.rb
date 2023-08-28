@@ -385,27 +385,35 @@ RSpec.describe 'Storefront V1 Home', type: :request do
         end
       end
     end
+  end
 
-    context 'GET /products/:id' do
-      let(:product) { create(:product) }
-      let(:url) { "/storefront/v1/products/#{product.id}" }
+  context 'GET /products/:id' do
+    let(:product) { create(:product) }
+    let(:url) { "/storefront/v1/products/#{product.id}" }
 
-      it 'returns requested Product' do
-        get url, headers: unauthenticated_header
-        expected_product = build_detailed_game_product_json(product)
-        expect(body_json['product']).to eq expected_product
-      end
+    it 'returns requested Product' do
+      get url, headers: unauthenticated_header
+      expected_product = build_detailed_game_product_json(product)
+      expect(body_json['product']).to eq expected_product
+    end
 
-      it 'returns success status' do
-        get url, headers: unauthenticated_header
-        expect(response).to have_http_status(:ok)
-      end
+    it 'returns success status' do
+      get url, headers: unauthenticated_header
+      expect(response).to have_http_status(:ok)
+    end
 
-      it 'returns right count this products was favorired' do
-        create_list(:wish_item, 5, product: product)
-        get url, headers: unauthenticated_header
-        expect(body_json['product']['favorited_count']).to eq 5
-      end
+    it 'returns right count this products was favorired' do
+      create_list(:wish_item, 5, product: product)
+      get url, headers: unauthenticated_header
+      expect(body_json['product']['favorited_count']).to eq 5
+    end
+
+    it "returns right count this product was sold" do
+      order = create(:order)
+      order.update(status: :finished)
+      create_list(:line_item, 2, quantity: 3, product: product, order: order)
+      get url, headers: unauthenticated_header
+      expect(body_json['product']['sells_count']).to eq 6
     end
   end
 
@@ -427,7 +435,7 @@ RSpec.describe 'Storefront V1 Home', type: :request do
     json.merge! product.productable.as_json(only: %i[mode release_date developer])
     json['system_requirement'] = product.productable.system_requirement.as_json
     json['favorited_count'] = product.wish_items.count
-    json['sells_count'] = 0
+    json['sells_count'] = product.sells_count
     json
   end
 end
